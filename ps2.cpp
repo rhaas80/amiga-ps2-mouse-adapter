@@ -57,8 +57,8 @@ void ps2Send(byte val) {
   Serial.println(val, HEX);
   #endif
 
-  pinMode(clkPin, OUTPUT);  
-  pinMode(dataPin, OUTPUT);
+  pinMode(clkPin, INPUT_PULLUP);
+  pinMode(dataPin, INPUT_PULLUP);
  
   byte parityBit = oddParityTable[val];
   
@@ -66,13 +66,14 @@ void ps2Send(byte val) {
 
   // 1)   Bring the Clock line low for at least 100 microseconds. 
   digitalWrite(clkPin, LOW);
+  pinMode(dataPin, OUTPUT);
   delayMicroseconds(150);
   
   // 2)   Bring the Data line low. 
   digitalWrite(dataPin, LOW);
+  pinMode(dataPin, OUTPUT);
 
   // 3)   Release the Clock line. 
-  digitalWrite(clkPin, HIGH);
   pinMode(clkPin, INPUT_PULLUP);  
 
   // 4)   Wait for the device to bring the Clock line low. 
@@ -80,7 +81,12 @@ void ps2Send(byte val) {
 
   for (int i = 0; i < 8; i++) {
     // 5)   Set/reset the Data line to send the first data bit 
-    digitalWrite(dataPin, val & 1);
+    if (val & 1) {
+      pinMode(dataPin, INPUT_PULLUP);
+    } else {
+      digitalWrite(dataPin, LOW);
+      pinMode(dataPin, OUTPUT);
+    }
     val = val >> 1;
 
     // 6)   Wait for the device to bring Clock high. 
@@ -91,12 +97,16 @@ void ps2Send(byte val) {
 
     // 8)   Repeat steps 5-7 for the other seven data bits and the parity bit     
   }
-  digitalWrite(dataPin, parityBit);
+  if (parityBit) {
+    pinMode(dataPin, INPUT_PULLUP);
+  } else {
+    digitalWrite(dataPin, LOW);
+    pinMode(dataPin, OUTPUT);
+  }
   waitPin(clkPin, HIGH);
   waitPin(clkPin, LOW);
 
   // 9)   Release the Data line. 
-  digitalWrite(dataPin, HIGH);
   pinMode(dataPin, INPUT_PULLUP);
 
   // 10) Wait for the device to bring Data low. 
