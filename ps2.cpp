@@ -29,8 +29,8 @@ static void avr_reset() {
   while(1); // let watchdog expire
 }
 
-static int clkPin = 2; 
-static int dataPin = 3;
+static byte clkPin = 2;
+static byte dataPin = 3;
 
 const unsigned char oddParityTable[256] PROGMEM = {
   1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
@@ -51,11 +51,11 @@ const unsigned char oddParityTable[256] PROGMEM = {
   1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1  
 };
 
-static void waitPin(int pin, int val) {
+static void waitPin(byte pin, byte val) {
   while(digitalRead(pin) != val);
 }
 
-void ps2SetPins(int clk, int data) {
+void ps2SetPins(byte clk, byte data) {
   clkPin = clk;
   dataPin = data;
 }

@@ -49,7 +49,7 @@
 #define PS2_RES_4_CNT_PER_MM 2
 #define PS2_RES_8_CNT_PER_MM 3
 
-void ps2SetPins(int clkPin, int dataPin);
+void ps2SetPins(byte clkPin, byte dataPin);
 void ps2Send(byte val);
 byte ps2Receive();
 void ps2SendCommand(byte cmd);
