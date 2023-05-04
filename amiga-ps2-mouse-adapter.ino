@@ -151,13 +151,13 @@ void setup() {
   blink();
 
   // Set up pin modes
-  pinMode(P_AMIGA_V_PULSE,  OUTPUT);
-  pinMode(P_AMIGA_H_PULSE,  OUTPUT);
-  pinMode(P_AMIGA_VQ_PULSE, OUTPUT);
-  pinMode(P_AMIGA_HQ_PULSE, OUTPUT);
-  pinMode(P_AMIGA_LMB,      OUTPUT);
-  pinMode(P_AMIGA_RMB,      OUTPUT);
-  pinMode(P_AMIGA_MMB,      OUTPUT);
+  pinMode(P_AMIGA_V_PULSE,  INPUT);
+  pinMode(P_AMIGA_H_PULSE,  INPUT);
+  pinMode(P_AMIGA_VQ_PULSE, INPUT);
+  pinMode(P_AMIGA_HQ_PULSE, INPUT);
+  pinMode(P_AMIGA_LMB,      INPUT);
+  pinMode(P_AMIGA_RMB,      INPUT);
+  pinMode(P_AMIGA_MMB,      INPUT);
 
   setupMouse();  
 
@@ -184,9 +184,23 @@ void loop() {
   bool rmb = (b1 & PS2_MASK_RMB) > 0;
   bool mmb = (b1 & PS2_MASK_MMB) > 0;
   
-  digitalWrite(P_AMIGA_LMB, lmb ? 0 : 1);
-  digitalWrite(P_AMIGA_MMB, mmb ? 0 : 1);
-  digitalWrite(P_AMIGA_RMB, rmb ? 0 : 1);
+  if (lmb) {
+    pinMode(P_AMIGA_LMB, OUTPUT);
+  } else {
+    pinMode(P_AMIGA_LMB, INPUT);
+  }
+
+  if (mmb) {
+    pinMode(P_AMIGA_MMB, OUTPUT);
+  } else {
+    pinMode(P_AMIGA_MMB, INPUT);
+  }
+
+  if (rmb) {
+    pinMode(P_AMIGA_RMB, OUTPUT);
+  } else {
+    pinMode(P_AMIGA_RMB, INPUT);
+  }
 
   // compute direction and steps, both horizontally and vertically.
   // For each pixel, we need to send 4 signals, therefore we multiple
@@ -207,15 +221,31 @@ void loop() {
       }
       
       if (stepsY > 0) {
-        digitalWrite(P_AMIGA_V_PULSE, p[posY]);
-        digitalWrite(P_AMIGA_VQ_PULSE, pq[posY]);
+        if (p[posY]) {
+          pinMode(P_AMIGA_V_PULSE, INPUT);
+        } else {
+          pinMode(P_AMIGA_V_PULSE, OUTPUT);
+        }
+        if (pq[posY]) {
+          pinMode(P_AMIGA_VQ_PULSE, INPUT);
+        } else {
+          pinMode(P_AMIGA_VQ_PULSE, OUTPUT);
+        }
         posY = (posY + dirY + 4) % 4;
         stepsY--;
       }
 
       if (stepsX > 0) {
-        digitalWrite(P_AMIGA_H_PULSE, p[posX]);
-        digitalWrite(P_AMIGA_HQ_PULSE, pq[posX]);
+        if (p[posX]) {
+          pinMode(P_AMIGA_H_PULSE, INPUT);
+        } else {
+          pinMode(P_AMIGA_H_PULSE, OUTPUT);
+        }
+        if (pq[posX]) {
+          pinMode(P_AMIGA_HQ_PULSE, INPUT);
+        } else {
+          pinMode(P_AMIGA_HQ_PULSE, OUTPUT);
+        }
         posX = (posX + dirX + 4) % 4;
         stepsX--;
       }
