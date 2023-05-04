@@ -145,6 +145,7 @@ byte ps2Receive() {
     // Start bit not 0??? Can't happen... What should we do now?
     #ifdef DEBUG_PS2
     Serial.println("Wrong start bit!");
+    Serial.flush();
     #endif
     avr_reset();
   }
@@ -166,6 +167,7 @@ byte ps2Receive() {
     // Parity bit wrong? WTF?
     #ifdef DEBUG_PS2
     Serial.println("Wrong parity!");
+    Serial.flush();
     #endif
     avr_reset();
   }
@@ -177,6 +179,7 @@ byte ps2Receive() {
     // Stop bit not 1??? Can't happen... What should we do now?
     #ifdef DEBUG_PS2
     Serial.println("Wrong stop bit!");
+    Serial.flush();
     #endif
     avr_reset();
   }
