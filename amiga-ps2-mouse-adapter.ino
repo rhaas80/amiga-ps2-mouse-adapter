@@ -2,6 +2,7 @@
  * Convert PS/2 mouse movements to Amiga mouse movements.
  * 
  * Copyright (c) 2020 Andreas Signer <asigner@gmail.com>
+ * Copyright (c) 2023 Roland Haas <rhaas80@gmail.com>
  *
  * This file is part of amiga-ps2-mouse-adapter.
  * 
