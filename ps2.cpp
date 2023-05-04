@@ -20,10 +20,19 @@
 #include "ps2.h"
 #include "Arduino.h"
 
+#include <avr/io.h>
+#include <avr/wdt.h>
+#include <avr/pgmspace.h>
+
+static void avr_reset() {
+  wdt_enable(WDTO_15MS);
+  while(1); // let watchdog expire
+}
+
 static int clkPin = 2; 
 static int dataPin = 3;
 
-const unsigned char oddParityTable[256] = {
+const unsigned char oddParityTable[256] PROGMEM = {
   1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
   0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 
   0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 
@@ -60,7 +69,7 @@ void ps2Send(byte val) {
   pinMode(clkPin, INPUT_PULLUP);
   pinMode(dataPin, INPUT_PULLUP);
  
-  byte parityBit = oddParityTable[val];
+  const byte parityBit = pgm_read_byte(&oddParityTable[val]);
   
   // From https://web.archive.org/web/20180126072045if_/http://www.computer-engineering.org:80/ps2mouse/
 
@@ -137,6 +146,7 @@ byte ps2Receive() {
     #ifdef DEBUG_PS2
     Serial.println("Wrong start bit!");
     #endif
+    avr_reset();
   }
 
   val = 0;
@@ -152,11 +162,12 @@ byte ps2Receive() {
   waitPin(clkPin, LOW);
   byte parity = digitalRead(dataPin);
 
-  if (parity != oddParityTable[val]) {
+  if (parity != pgm_read_byte(&oddParityTable[val])) {
     // Parity bit wrong? WTF?
     #ifdef DEBUG_PS2
     Serial.println("Wrong parity!");
     #endif
+    avr_reset();
   }
 
   waitPin(clkPin, HIGH);
@@ -167,6 +178,7 @@ byte ps2Receive() {
     #ifdef DEBUG_PS2
     Serial.println("Wrong stop bit!");
     #endif
+    avr_reset();
   }
 
   waitPin(clkPin, HIGH);

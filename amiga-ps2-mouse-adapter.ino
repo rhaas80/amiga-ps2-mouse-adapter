@@ -23,6 +23,8 @@
 #include "config.h"
 #include "ps2.h"
 
+#include <avr/pgmspace.h>
+
 #define LED 13
 
 // Input pins
@@ -109,8 +111,8 @@ static inline int sgn(int val) {
  */   
 
 // pulse pattern for moving right/down.
-const byte p[4]  = { 1, 1, 0, 0 };
-const byte pq[4] = { 0, 1, 1, 0 };
+const byte p[4] PROGMEM = { 1, 1, 0, 0 };
+const byte pq[4] PROGMEM = { 0, 1, 1, 0 };
 
 // position in pattern for x and y movement
 byte posX = 0;
@@ -217,12 +219,12 @@ void loop() {
       }
       
       if (stepsY > 0) {
-        if (p[posY]) {
+        if (pgm_read_byte(&p[posY])) {
           pinMode(P_AMIGA_V_PULSE, INPUT);
         } else {
           pinMode(P_AMIGA_V_PULSE, OUTPUT);
         }
-        if (pq[posY]) {
+        if (pgm_read_byte(&pq[posY])) {
           pinMode(P_AMIGA_VQ_PULSE, INPUT);
         } else {
           pinMode(P_AMIGA_VQ_PULSE, OUTPUT);
@@ -232,12 +234,12 @@ void loop() {
       }
 
       if (stepsX > 0) {
-        if (p[posX]) {
+        if (pgm_read_byte(&p[posX])) {
           pinMode(P_AMIGA_H_PULSE, INPUT);
         } else {
           pinMode(P_AMIGA_H_PULSE, OUTPUT);
         }
-        if (pq[posX]) {
+        if (pgm_read_byte(&pq[posX])) {
           pinMode(P_AMIGA_HQ_PULSE, INPUT);
         } else {
           pinMode(P_AMIGA_HQ_PULSE, OUTPUT);
