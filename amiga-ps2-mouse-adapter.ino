@@ -202,13 +202,10 @@ void loop() {
     pinMode(P_AMIGA_RMB, INPUT);
   }
 
-  // compute direction and steps, both horizontally and vertically.
-  // For each pixel, we need to send 4 signals, therefore we multiple
-  // the distances by 4.
   int dirX = sgn(dx);
-  int stepsX = 4*abs(dx);
+  int stepsX = abs(dx);
   int dirY = sgn(dy);
-  int stepsY = 4*abs(dy);
+  int stepsY = abs(dy);
 
   // We need to send stepsX horizontal and stepsY vertical signals
   // as quickly as we can. 
