@@ -28,6 +28,23 @@
 #define P_PS2_CLK  3
 #define P_PS2_DATA 2
 
+/*
+ * PS/2 pinout female (computer port) connector from the front
+ *    _   _
+ *   / |_| \
+ *  / 6   5 \
+ * < 4     3 >
+ *  \ 2   1 /
+ *   - - - -
+ *
+ *   1 DATA
+ *   2 N/C
+ *   3 GND
+ *   4 +5V
+ *   5 CLK
+ *   6 N/C
+ */
+
 // Output pins              // Cable color to D-sub 9
 #define P_AMIGA_V_PULSE  12 // Purple
 #define P_AMIGA_H_PULSE  11 // Brown
@@ -36,6 +53,29 @@
 #define P_AMIGA_LMB       8 // Yellow
 #define P_AMIGA_RMB       7 // Green
 #define P_AMIGA_MMB       6 // Orange
+
+/*
+ * Amiga mouse-port, looking at the amiga:
+ *
+ * 9 PIN D-SUB MALE
+ *
+ *   _________________________
+ *   \                       /
+ *    \  1   2   3   4   5  /
+ *     \                   /
+ *      \  6   7   8   9  /
+ *       \_______________/
+ *
+ * 1  V-pulse
+ * 2  H-pulse
+ * 3  VQ-pulse
+ * 4  HQ-pulse
+ * 5  BUTTON 3 (Middle)
+ * 6  BUTTON 1 (Lefl)
+ * 7  +5V
+ * 8  GND
+ * 9  BUTTON 2 (Right)
+ */
 
 static inline int sgn(int val) {
   return (val < 0) ? -1 : ((val > 0) ? 1 : 0);
