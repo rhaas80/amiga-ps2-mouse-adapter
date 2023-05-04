@@ -109,12 +109,12 @@ static inline int sgn(int val) {
  */   
 
 // pulse pattern for moving right/down.
-int p[4]  = { 1, 1, 0, 0 };
-int pq[4] = { 0, 1, 1, 0 };
+const byte p[4]  = { 1, 1, 0, 0 };
+const byte pq[4] = { 0, 1, 1, 0 };
 
 // position in pattern for x and y movement
-int posX = 0;
-int posY = 0;
+byte posX = 0;
+byte posY = 0;
 
 void setupMouse() {
   ps2SendCommand(PS2_CMD_RESET);
@@ -166,24 +166,23 @@ void setup() {
   blink();
 }
 
-int led = 0;
 void loop() {
   ps2SendCommand(PS2_CMD_READ_DATA);
   byte b1 = ps2Receive();
   short dx = ps2Receive();
   short dy = ps2Receive();
 
-  if ((b1 &  PS2_MASK_Y_SIGN) > 0) {
+  if (b1 &  PS2_MASK_Y_SIGN) {
     dy |= 0xff00;
   } 
-  if ((b1 &  PS2_MASK_X_SIGN) > 0) {
+  if (b1 &  PS2_MASK_X_SIGN) {
     dx |= 0xff00;
   }
   dy = -dy;
 
-  bool lmb = (b1 & PS2_MASK_LMB) > 0;
-  bool rmb = (b1 & PS2_MASK_RMB) > 0;
-  bool mmb = (b1 & PS2_MASK_MMB) > 0;
+  bool lmb = b1 & PS2_MASK_LMB;
+  bool rmb = b1 & PS2_MASK_RMB;
+  bool mmb = b1 & PS2_MASK_MMB;
   
   if (lmb) {
     pinMode(P_AMIGA_LMB, OUTPUT);
@@ -217,8 +216,7 @@ void loop() {
   while (steps-- > 0) {
       // Show some activity...
       if (steps % 4 == 0) {
-        digitalWrite(LED, led);
-        led = 1 - led;
+        digitalWrite(LED, digitalRead(LED));
       }
       
       if (stepsY > 0) {
@@ -232,7 +230,7 @@ void loop() {
         } else {
           pinMode(P_AMIGA_VQ_PULSE, OUTPUT);
         }
-        posY = (posY + dirY + 4) % 4;
+        posY = (posY + dirY + 4) & 0x3;
         stepsY--;
       }
 
@@ -247,7 +245,7 @@ void loop() {
         } else {
           pinMode(P_AMIGA_HQ_PULSE, OUTPUT);
         }
-        posX = (posX + dirX + 4) % 4;
+        posX = (posX + dirX + 4) & 0x3;
         stepsX--;
       }
 
