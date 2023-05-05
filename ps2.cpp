@@ -60,6 +60,16 @@ void ps2SetPins(byte clk, byte data) {
   dataPin = data;
 }
 
+void ps2Inhibit() {
+  digitalWrite(clkPin, LOW);
+  pinMode(dataPin, OUTPUT);
+  delayMicroseconds(150);
+}
+
+void ps2Release() {
+  pinMode(dataPin, INPUT_PULLUP);
+}
+
 void ps2Send(byte val) {
   #ifdef DEBUG_PS2
   Serial.print("PS/2 send: ");

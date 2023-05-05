@@ -53,3 +53,5 @@ void ps2SetPins(byte clkPin, byte dataPin);
 void ps2Send(byte val);
 byte ps2Receive();
 void ps2SendCommand(byte cmd);
+void ps2Inhibit();
+void ps2Release();

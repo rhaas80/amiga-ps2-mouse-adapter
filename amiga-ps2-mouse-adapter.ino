@@ -131,8 +131,9 @@ void setupMouse() {
   ps2SendCommand(PS2_CMD_SET_RESOLUTION);
   ps2SendCommand(PS2_RES_4_CNT_PER_MM);
 
-  // Switch to polling.
-  ps2SendCommand(PS2_CMD_SET_REMOTE_MODE);
+  // Enable data then stop mouse
+  ps2SendCommand(PS2_CMD_ENABLE_DATA_REPORTING);
+  ps2Inhibit();
 }
 
 void blink() {
@@ -171,10 +172,11 @@ void setup() {
 }
 
 void loop() {
-  ps2SendCommand(PS2_CMD_READ_DATA);
+  ps2Release();
   byte b1 = ps2Receive();
   short dx = ps2Receive();
   short dy = ps2Receive();
+  ps2Inhibit();
 
   if (b1 &  PS2_MASK_Y_SIGN) {
     dy |= 0xff00;
