@@ -126,8 +126,10 @@ void setupMouse() {
   // Amiga generates 200 impulses/inch, which is  
   // 0.78 impulses/mm, so let's go with a resolution
   // of 1 count per mm.
+  // Add a factor of 4 for impulses vs state change
+  // of quadrature code
   ps2SendCommand(PS2_CMD_SET_RESOLUTION);
-  ps2SendCommand(PS2_RES_1_CNT_PER_MM);
+  ps2SendCommand(PS2_RES_4_CNT_PER_MM);
 
   // Switch to polling.
   ps2SendCommand(PS2_CMD_SET_REMOTE_MODE);
@@ -180,6 +182,8 @@ void loop() {
   if (b1 &  PS2_MASK_X_SIGN) {
     dx |= 0xff00;
   }
+  // orientation is (usually) opposite
+  // speed seems to be much slower (usually)
   dy = -dy;
 
   bool lmb = b1 & PS2_MASK_LMB;
