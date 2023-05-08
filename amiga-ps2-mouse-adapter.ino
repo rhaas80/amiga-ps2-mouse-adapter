@@ -28,7 +28,7 @@
 #define LED 13
 
 // Input pins
-// these *may* require an external pull-up (1kOhm or so) to work
+// these *may* require an external pull-up (10kOhm or so) to work
 // reliably since the Arduino's built in pullups are a bit weak
 #define P_PS2_CLK  3
 #define P_PS2_DATA 2
