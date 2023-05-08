@@ -28,8 +28,11 @@
 #define LED 13
 
 // Input pins
-// these *may* require an external pull-up (10kOhm or so) to work
-// reliably since the Arduino's built in pullups are a bit weak
+// these *may* require an external pull-up (~5kOhm or so) to work
+// reliably since the Arduino's built in pullups are a bit weak.
+// See Adam Chpweske's article, or its copy at
+// https://www-ug.eecg.utoronto.ca/desl/nios_devices_SoC/datasheets/PS2%20Protocol.htm
+
 //   Input signal  Arduino pin
 #define P_PS2_CLK  3
 #define P_PS2_DATA 2
@@ -102,8 +105,8 @@
   *     GND-------------- 3
   *     VCC----+-----+--- 4
   *            |     |
-  *         10kOhm   |
-  *            |   10kOhm
+  *        4.7kOhm   |
+  *            |   4.7kOhm
   *            |     |
   *      2-----+--------- 1
   *                  |
