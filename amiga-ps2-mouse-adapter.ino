@@ -30,6 +30,7 @@
 // Input pins
 // these *may* require an external pull-up (10kOhm or so) to work
 // reliably since the Arduino's built in pullups are a bit weak
+//   Input signal  Arduino pin
 #define P_PS2_CLK  3
 #define P_PS2_DATA 2
 
@@ -50,14 +51,14 @@
  *   6 N/C
  */
 
-// Output pins              // Cable color to D-sub 9
-#define P_AMIGA_V_PULSE  12 // Purple
-#define P_AMIGA_H_PULSE  11 // Brown
-#define P_AMIGA_VQ_PULSE 10 // Blue
-#define P_AMIGA_HQ_PULSE  9 // White
-#define P_AMIGA_LMB       8 // Yellow
-#define P_AMIGA_RMB       7 // Green
-#define P_AMIGA_MMB       6 // Orange
+//      Output signal    Arduino pins
+#define P_AMIGA_V_PULSE  12
+#define P_AMIGA_H_PULSE  11
+#define P_AMIGA_VQ_PULSE 10
+#define P_AMIGA_HQ_PULSE  9
+#define P_AMIGA_LMB       8
+#define P_AMIGA_RMB       7
+#define P_AMIGA_MMB       6
 
 /*
  * Amiga mouse-port, looking at the amiga:
